@@ -75,6 +75,10 @@ resource "aws_default_security_group" "default-sg" {
   tags = {
     Name: "${var.env_prefix}-default-sg"
   }
+provisional "local-exec"{
+working_dir = "Users/manuel/ansible
+command = "ansible-playbook --inventory ${self.public_ip},--private-key ${var.ssh_key_private} --user ec2-user deploy-docker-new-user.yaml
+}
 }
 
 data "aws_ami" "latest-amazon-linux-image" {
