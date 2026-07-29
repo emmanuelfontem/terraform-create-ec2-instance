@@ -132,8 +132,11 @@ resource "aws_instance" "myapp-server" {
 
 # null resource can be used to run provisioner
 #resource "null_resource" "configure_server" {
+#  triggers = {
+#   trigger = aws_instance.myapp-server.public_ip
+#}
  # provisioner "local-exec"{
   #  working_dir = "/Users/manuel/ansible-for-DevOps"
-   # command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_private} --user ec2-user playbook.yaml"
+   # command = "ansible-playbook --inventory ${aws_instance.myapp-server.public_ip}, --private-key ${var.ssh_key_private} --user ec2-user playbook.yaml"
   #}
 #}
