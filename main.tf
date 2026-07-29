@@ -10,6 +10,7 @@ variable my_ip {}
 variable instance_type {}
 variable public_key_location {}
 variable instance_count {}
+variable ssh_key_private {}
 
 resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc_cidr_block
@@ -75,10 +76,6 @@ resource "aws_default_security_group" "default-sg" {
   tags = {
     Name: "${var.env_prefix}-default-sg"
   }
-provisional "local-exec"{
-working_dir = "Users/manuel/ansible
-command = "ansible-playbook --inventory ${self.public_ip},--private-key ${var.ssh_key_private} --user ec2-user deploy-docker-new-user.yaml
-}
 }
 
 data "aws_ami" "latest-amazon-linux-image" {
@@ -126,5 +123,9 @@ resource "aws_instance" "myapp-server" {
 
   tags = {
     Name: "${var.env_prefix}-server${count.index + 1}"
+  }
+  provisioner "local-exec"{
+    working_dir = "/Users/manuel/ansible"
+    command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_private} --user ec2-user deploy-docker-new-user.yaml"
   }
 }
